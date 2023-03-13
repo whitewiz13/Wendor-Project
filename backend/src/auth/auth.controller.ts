@@ -6,7 +6,6 @@ import ResponseMessage from './entity/responseMessage.entity';
 @Controller('auth')
 export class AuthController {
     responseMessage = new ResponseMessage();
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     constructor(private authService: AuthService) { }
 
     @Get('verify-auth')
