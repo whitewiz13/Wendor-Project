@@ -6,6 +6,7 @@ import inventoryAnimation from '../../public/lotties/inventory.json';
 import Lottie from "lottie-react";
 import Snackbar from "@/components/Snackbar";
 import useLoginMutation from "@/queries/loginMutation";
+import useOTPMutation from "@/queries/otpMutation";
 
 const Login = () => {
     const [phoneNumber, setPhoneNumber] = useState('+91');
@@ -16,20 +17,25 @@ const Login = () => {
     });
     const [enableOTP, setEnableOTP] = useState(false);
     const loginMutation = useLoginMutation({ setSnackbarData });
+    const otpMutation = useOTPMutation({ setSnackbarData });
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (phoneNumber === "+91" || phoneNumber?.length < 10) {
-            setSnackbarData({
+            return setSnackbarData({
                 message: "Please enter a valid contact number",
                 type: "ERROR"
             });
         }
-        loginMutation.mutate({ phoneNumber: phoneNumber });
-        // setEnableOTP(true);
-        // if (enableOTP) {
-        //     loginMutation.mutate(phoneNumber);
-        // }
+        if (!enableOTP) {
+            loginMutation.mutate({ phoneNumber: phoneNumber });
+            setEnableOTP(true);
+            return;
+        }
+        if (enableOTP) {
+            otpMutation.mutate({ phoneNumber: phoneNumber, otp: otp });
+            return;
+        }
     }
     return (
         <>
@@ -56,8 +62,6 @@ const Login = () => {
                 </div>
                 <div className="w-fit xl:w-1/3 lg:mr-3">
                     <div>
-                        <div className="max-w-md w-full mx-auto">
-                        </div>
                         <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">Log in to your account</h2>
                         {enableOTP ? <p className="mt-4 text-center text-gray-900">OTP Sent to
                             <span className="font-bold"> {phoneNumber}</span></p> : null}
@@ -112,6 +116,13 @@ const Login = () => {
                             </button>
                         </div>
                     </form>
+                    {enableOTP ? <div className="flex">
+                        <button className="mt-3 text-sm font-bold text-center text-indigo-600 hover:text-indigo-500" onClick={() => {
+                            setEnableOTP(false);
+                        }}>
+                            Change Number?
+                        </button>
+                    </div> : null}
                     <footer className="mt-8">
                         <div className="max-w-md mx-auto flex justify-center text-gray-500">
                             <p className="text-sm">&copy; 2023 Sandeep Thakur. All rights reserved.</p>
