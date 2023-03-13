@@ -40,7 +40,7 @@ const Login = () => {
     return (
         <>
             <Head>
-                <title>Closure AI - Login</title>
+                <title>Inventory - Login</title>
                 <meta name="description" content="Closure AI Login Page" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
             </Head>
