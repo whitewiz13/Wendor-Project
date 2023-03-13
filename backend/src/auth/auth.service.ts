@@ -33,14 +33,14 @@ export class AuthService {
     async generateJWT(phoneNumber: string) {
         const payload = { phoneNumber: phoneNumber };
         return {
-            access_token: this.jwtService.sign(payload),
+            accessToken: this.jwtService.sign(payload),
         };
     }
 
     async validateJWTLogin(phoneNumber: string) {
         try {
             //Find in database
-            return this.serviceMessage.create(null, "Not found in db");
+            return this.serviceMessage.create(phoneNumber, "Data found");
         } catch (error) {
             return this.serviceMessage.create(null, error.message);
         }

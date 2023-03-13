@@ -1,4 +1,5 @@
-import { Controller, Res, Post, Body } from '@nestjs/common';
+import { Controller, Res, Post, Body, Get, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import ResponseMessage from './entity/responseMessage.entity';
 
@@ -7,6 +8,13 @@ export class AuthController {
     responseMessage = new ResponseMessage();
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     constructor(private authService: AuthService) { }
+
+    @Get('verify-auth')
+    @UseGuards(AuthGuard('jwt'))
+    async verifyAuth(@Req() req: any, @Res() res: any) {
+        console.log(req.user);
+        return res.status(200).json(this.responseMessage.create(req.user, "Verfied Successfully", "SUCCESS"));
+    }
 
     @Post('login')
     async userLogin(@Body() body: any, @Res() res: any) {
