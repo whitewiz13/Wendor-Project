@@ -1,7 +1,7 @@
 class ServiceMessage {
-    create(user: any, message: string) {
+    create(data: any, message: string) {
         return ({
-            user,
+            data,
             message
         });
     }
