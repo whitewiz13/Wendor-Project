@@ -10,12 +10,12 @@ const useOTPMutation = ({ setSnackbarData }: any) => {
         try {
             const res = await axios.post(`${config.baseUrl}/auth/login-otp`, otpData);
             console.log(res.data);
-            // localStorage.setItem("accessToken", res?.data?.data?.accessToken);
-            // dispatch({
-            //     type: "USER_LOGGED_IN",
-            //     payload: res?.data?.data
-            // });
-            // return res?.data?.data;
+            localStorage.setItem("accessToken", res?.data?.data?.accessToken);
+            dispatch({
+                type: "USER_LOGGED_IN",
+                payload: res?.data?.data
+            });
+            return res?.data?.data;
         } catch (error: any) {
             console.log(error);
             return setSnackbarData({

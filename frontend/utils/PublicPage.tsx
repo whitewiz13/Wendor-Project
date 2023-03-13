@@ -21,7 +21,7 @@ const withPublic = (WrappedComponent: any) => {
             return <WrappedComponent {...props} />
         }
         if (state.isLoggedIn === true) {
-            Router.push('/profile');
+            Router.push('/products');
         }
     }
     return withQueryClient(WithPublic)

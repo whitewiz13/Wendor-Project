@@ -105,10 +105,10 @@ const Login = () => {
                         <div>
                             <button
                                 type="submit"
-                                disabled={loginMutation.isLoading}
+                                disabled={loginMutation.isLoading || otpMutation.isLoading}
                                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
-                                {loginMutation.isLoading ? (
+                                {(loginMutation.isLoading || otpMutation.isLoading) ? (
                                     <p className="animate-pulse">Signing you in</p>
                                 ) : (
                                     <p>Sign in / Sign up</p>
