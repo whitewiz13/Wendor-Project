@@ -5,6 +5,7 @@ import { UserContext } from "@/app-context";
 import ProductCard from "@/components/ProductCard";
 import Head from "next/head";
 import { ProductContext, ProductProviderWrapper } from "@/app-context";
+import useLoadProductQuery from "@/queries/productQueries/loadProduct";
 
 const products = [
     {
@@ -32,9 +33,13 @@ const Products = () => {
     const { dispatch }: any = useContext(UserContext);
     const { state }: any = useContext(ProductContext);
 
+    const loadProducts = useLoadProductQuery("loadProducts");
+
     useEffect(() => {
-        console.log(state);
-    }, []);
+        if (loadProducts.isSuccess) {
+            console.log(state);
+        }
+    }, [loadProducts]);
 
     const handleSignOut = () => {
         dispatch({
@@ -72,8 +77,13 @@ const Products = () => {
                         <p>Add Product</p>
                     </button>
                 </div>
+                {loadProducts.isLoading ? <div>
+                    <h2 className="text-center text-3xl font-extrabold text-gray-900">
+                        Loading
+                    </h2>
+                </div> : null}
                 <div className="flex">
-                    {products.map((product) => (
+                    {state.products.map((product: any) => (
                         <ProductCard key={product.id} product={product} />
                     ))}
                 </div>

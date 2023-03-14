@@ -9,7 +9,6 @@ const useOTPMutation = ({ setSnackbarData }: any) => {
     return useMutation(async (otpData: any) => {
         try {
             const res = await axios.post(`${config.baseUrl}/auth/login-otp`, otpData);
-            console.log(res.data);
             localStorage.setItem("accessToken", res?.data?.data?.accessToken);
             dispatch({
                 type: "USER_LOGGED_IN",
