@@ -17,7 +17,6 @@ export class AuthService {
 
     async handleOTP(phoneNumber: string) {
         try {
-            console.log(phoneNumber);
             const res = await this.client.verify.v2.services(process.env.TWILIO_VERIFY_SID)
                 .verifications.create({ to: phoneNumber, channel: "sms" });
             return this.serviceMessage.create({ status: res.status }, "OTP Sent successfully");
@@ -33,12 +32,17 @@ export class AuthService {
             if (!res.valid) {
                 return this.serviceMessage.create(null, "Invalid OTP");
             }
-            let user = await this.userService.find(phoneNumber);
-            if (!user) {
-                user = await this.userService.create({ phoneNumber: phoneNumber });
+            let data: any;
+            let message: any;
+            ({ data, message } = await this.userService.find(phoneNumber));
+            if (!data) {
+                ({ data, message } = await this.userService.create({ phoneNumber: phoneNumber }));
+            }
+            if (!data) {
+                return this.serviceMessage.create(null, message);
             }
             const accessToken = await this.generateJWT(phoneNumber);
-            return this.serviceMessage.create({ user: user, ...accessToken }, "OTP Verified successfully");
+            return this.serviceMessage.create({ user: data, ...accessToken }, "OTP Verified successfully");
         } catch (error) {
             return this.serviceMessage.create(null, error.message);
         }

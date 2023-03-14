@@ -11,8 +11,12 @@ export class AuthController {
     @Get('verify-auth')
     @UseGuards(AuthGuard('jwt'))
     async verifyAuth(@Req() req: any, @Res() res: any) {
-        console.log(req.user);
-        return res.status(200).json(this.responseMessage.create(req.user, "Verfied Successfully", "SUCCESS"));
+        try {
+            return res.status(200).json(this.responseMessage.create(req.user, "Verfied Successfully", "SUCCESS"));
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(this.responseMessage.create(null, error?.message, "ERROR"));
+        }
     }
 
     @Post('login')
