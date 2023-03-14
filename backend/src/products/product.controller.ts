@@ -3,20 +3,27 @@ import { AuthGuard } from '@nestjs/passport';
 import { ProductService } from './product.service';
 import ResponseMessage from 'src/utils/responseMessage.util';
 import { FileInterceptor } from "@nestjs/platform-express";
+import { FirebaseStorageService } from 'src/firebaseStorage/firebaseStorage.service';
 
 @Controller('products')
 export class ProductController {
     responseMessage = new ResponseMessage();
-    constructor(private productService: ProductService) { }
+    constructor(private productService: ProductService,
+        private storageService: FirebaseStorageService) { }
 
     @Post('create')
     @UseGuards(AuthGuard('jwt'))
     @UseInterceptors(FileInterceptor("image"))
     async createProduct(@UploadedFile() file: any, @Body() body: any, @Req() req: any, @Res() res: any) {
         try {
+            let url: string;
+            if (file) {
+                url = await this.storageService.uploadFile(file);
+            }
             const { data, message } = await this.productService.create({
                 ...body,
                 createdOn: new Date(),
+                imageUrl: url,
                 createdBy: req?.user?.data['id']
             });
             if (!data) {

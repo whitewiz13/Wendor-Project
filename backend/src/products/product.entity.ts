@@ -21,6 +21,9 @@ export class Product {
     @Column()
     createdBy: number
 
+    @Column({ nullable: true })
+    imageUrl: string
+
     @ManyToOne(() => User)
     @JoinColumn({ name: 'createdBy' })
     user: User;
