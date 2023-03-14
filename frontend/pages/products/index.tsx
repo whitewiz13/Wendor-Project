@@ -7,7 +7,7 @@ import Head from "next/head";
 import { ProductContext, ProductProviderWrapper } from "@/app-context";
 import useLoadProductQuery from "@/queries/productQueries/loadProductQuery";
 import Snackbar from "@/components/Snackbar";
-import useDeleteProductMutation from "@/queries/productQueries/deleteProductMutation";
+import AddProductModal from "@/components/AddProductModal";
 
 const Products = () => {
     const { dispatch }: any = useContext(UserContext);
@@ -47,12 +47,7 @@ const Products = () => {
                     Products
                 </h2>
                 <div className="flex justify-center mt-2">
-                    <button
-                        type="submit"
-                        className="group relative w-halfs flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        <p>Add Product</p>
-                    </button>
+                    <AddProductModal setSnackbarData={setSnackbarData} />
                 </div>
                 {loadProducts.isLoading ? <div>
                     <h2 className="text-center text-3xl font-extrabold text-gray-900">
