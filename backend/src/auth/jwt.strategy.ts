@@ -18,6 +18,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         if (!data) {
             throw new UnauthorizedException(message);
         }
-        return { data, accessToken: '' };
+        return { ...data, accessToken: '' };
     }
 }

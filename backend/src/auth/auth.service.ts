@@ -60,7 +60,7 @@ export class AuthService {
             //Find in database
             const user = await this.userService.find(phoneNumber);
             if (!user) {
-                return this.serviceMessage.create(phoneNumber, "User not found");
+                return this.serviceMessage.create(null, "User not found");
             }
             return this.serviceMessage.create(user, "Data found");
         } catch (error) {
