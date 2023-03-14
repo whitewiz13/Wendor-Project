@@ -9,7 +9,7 @@ const ProductCard = ({ product, setSnackbarData }: any) => {
         deleteProduct.mutate(product?.id);
     }
     return (
-        <div className="max-w-sm rounded overflow-hidden border shadow-lg border-gray-400 m-5 mt-12 py-4">
+        <div className="flex-auto max-w-sm rounded overflow-hidden border shadow-lg border-gray-400 m-5 mt-12 py-4">
             {/* <img className="w-full" src={product.imageUrl} alt={product.name} /> */}
             <div className="px-6 py-4">
                 <div className="flex justify-between">

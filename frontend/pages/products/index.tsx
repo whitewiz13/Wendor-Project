@@ -54,7 +54,7 @@ const Products = () => {
                         Loading
                     </h2>
                 </div> : null}
-                <div className="flex">
+                <div className='flex flex-wrap mt-2 justify-center'>
                     {state.products.map((product: any) => (
                         <ProductCard
                             setSnackbarData={setSnackbarData}

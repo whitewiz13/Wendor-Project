@@ -14,9 +14,16 @@ const AddProductModal = ({ setSnackbarData }: any) => {
 
     useEffect(() => {
         if (addProduct.isSuccess || addProduct.isError) {
+            //Add a check
+            setFormData({
+                name: "",
+                price: "",
+                description: "",
+                image: null,
+            });
             setShowModal(false);
         }
-    }, [addProduct]);
+    }, [addProduct.isSuccess, addProduct.isError]);
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
@@ -71,6 +78,7 @@ const AddProductModal = ({ setSnackbarData }: any) => {
                                                 type="text"
                                                 name="name"
                                                 id="name"
+                                                required
                                                 className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                                 value={formData.name}
                                                 onChange={handleInputChange}
@@ -86,6 +94,7 @@ const AddProductModal = ({ setSnackbarData }: any) => {
                                             <input
                                                 type="number"
                                                 name="price"
+                                                required
                                                 id="price"
                                                 className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                                 value={formData.price}
@@ -102,6 +111,7 @@ const AddProductModal = ({ setSnackbarData }: any) => {
                                             <textarea
                                                 name="description"
                                                 id="description"
+                                                required
                                                 className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                                 value={formData.description}
                                                 onChange={handleInputChange}
