@@ -1,45 +1,22 @@
 import withQueryClient from "@/utils/QueryClient";
 import withAuth from "@/utils/ProtectedPage";
-import { useContext, useEffect } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "@/app-context";
 import ProductCard from "@/components/ProductCard";
 import Head from "next/head";
 import { ProductContext, ProductProviderWrapper } from "@/app-context";
 import useLoadProductQuery from "@/queries/productQueries/loadProductQuery";
-
-const products = [
-    {
-        id: "1234",
-        imageUrl: "",
-        name: "One Plus TV",
-        price: 100,
-        createdBy: "Sandeep",
-        createdOn: "10th Oct",
-        description: "This is a greate TV"
-    },
-    {
-        id: "5678",
-        imageUrl: "",
-        name: "HP Omen laptop",
-        price: 200,
-        createdBy: "Sandeep",
-        createdOn: "11th Oct",
-        description: "This is a greate laptop"
-    }
-
-]
+import Snackbar from "@/components/Snackbar";
+import useDeleteProductMutation from "@/queries/productQueries/deleteProductMutation";
 
 const Products = () => {
     const { dispatch }: any = useContext(UserContext);
     const { state }: any = useContext(ProductContext);
-
+    const [snackbarData, setSnackbarData] = useState({
+        message: '',
+        type: '',
+    });
     const loadProducts = useLoadProductQuery("loadProducts");
-
-    useEffect(() => {
-        if (loadProducts.isSuccess) {
-            console.log(state);
-        }
-    }, [loadProducts]);
 
     const handleSignOut = () => {
         dispatch({
@@ -84,10 +61,16 @@ const Products = () => {
                 </div> : null}
                 <div className="flex">
                     {state.products.map((product: any) => (
-                        <ProductCard key={product.id} product={product} />
+                        <ProductCard
+                            setSnackbarData={setSnackbarData}
+                            key={product.id}
+                            product={product} />
                     ))}
                 </div>
             </div>
+            {snackbarData?.message ?
+                <Snackbar snackbarData={snackbarData} setSnackbarData={setSnackbarData} /> :
+                null}
         </div>
     </>)
 }
