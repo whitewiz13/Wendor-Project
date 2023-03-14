@@ -1,30 +1,67 @@
-import { Controller, Res, Get, Req, UseGuards, Post } from '@nestjs/common';
+import { Controller, Res, Get, Req, UseGuards, Post, Body, UseInterceptors, UploadedFile, Delete } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ProductService } from './product.service';
 import ResponseMessage from 'src/utils/responseMessage.util';
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @Controller('products')
 export class ProductController {
     responseMessage = new ResponseMessage();
     constructor(private productService: ProductService) { }
 
+    @Post('create')
+    @UseGuards(AuthGuard('jwt'))
+    @UseInterceptors(FileInterceptor("image"))
+    async createProduct(@UploadedFile() file: any, @Body() body: any, @Req() req: any, @Res() res: any) {
+        try {
+            const { data, message } = await this.productService.create({
+                ...body,
+                createdOn: new Date(),
+                createdBy: req?.user?.data['id']
+            });
+            if (!data) {
+                return res.status(500).json(this.responseMessage.create(null, message, "ERROR"));
+            }
+            return res.status(200).json(this.responseMessage.create(data, message, "SUCCESS"));
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(this.responseMessage.create(null, error?.message, "ERROR"));
+        }
+    }
+
     @Get('find')
     @UseGuards(AuthGuard('jwt'))
     async findProduct(@Req() req: any, @Res() res: any) {
-        const products = await this.productService.findAll();
-        return res.status(200).json(this.responseMessage.create(products, "Products fetched successfully", "SUCCESS"));
+        try {
+            let data: any
+            let message: any;
+            if (req?.query?.userId) {
+                ({ data, message } = await this.productService.findByUser(req?.query?.userId));
+            } else {
+                ({ data, message } = await this.productService.findAll());
+            }
+            if (!data) {
+                return res.status(500).json(this.responseMessage.create(null, message, "ERROR"));
+            }
+            return res.status(200).json(this.responseMessage.create(data, message, "SUCCESS"));
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(this.responseMessage.create(null, error?.message, "ERROR"));
+        }
     }
 
-    @Post('create')
+    @Delete('delete')
     @UseGuards(AuthGuard('jwt'))
-    async createProduct(@Req() req: any, @Res() res: any) {
-        const product = await this.productService.create({
-            name: "One Plus",
-            description: "Some new tv",
-            price: 100,
-            createdOn: new Date(),
-            createdBy: "Me"
-        });
-        return res.status(200).json(this.responseMessage.create(product, "Products fetched successfully", "SUCCESS"));
+    async deleteProduct(@Req() req: any, @Res() res: any) {
+        try {
+            const { data, message } = await this.productService.delete(req.query.id);
+            if (!data) {
+                return res.status(500).json(this.responseMessage.create(null, message, "ERROR"));
+            }
+            return res.status(200).json(this.responseMessage.create(data, "Product deleted successfully", "SUCCESS"));
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json(this.responseMessage.create(null, error?.message, "ERROR"));
+        }
     }
 }

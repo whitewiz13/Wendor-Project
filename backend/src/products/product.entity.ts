@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { User } from 'src/user/user.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity()
 export class Product {
@@ -18,5 +19,9 @@ export class Product {
     createdOn: Date
 
     @Column()
-    createdBy: string
+    createdBy: number
+
+    @ManyToOne(() => User)
+    @JoinColumn({ name: 'createdBy' })
+    user: User;
 }
