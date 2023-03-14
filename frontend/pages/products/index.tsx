@@ -5,7 +5,7 @@ import { UserContext } from "@/app-context";
 import ProductCard from "@/components/ProductCard";
 import Head from "next/head";
 import { ProductContext, ProductProviderWrapper } from "@/app-context";
-import useLoadProductQuery from "@/queries/productQueries/loadProduct";
+import useLoadProductQuery from "@/queries/productQueries/loadProductQuery";
 
 const products = [
     {

@@ -1,15 +1,20 @@
 import { UserContext } from '@/app-context';
 import axios from 'axios';
-import { config } from './config';
+import { config } from '../config';
 import { useContext } from 'react';
 import { useMutation } from 'react-query';
 
-const useLoginMutation = ({ setSnackbarData }: any) => {
+const useOTPMutation = ({ setSnackbarData }: any) => {
     const { dispatch }: any = useContext(UserContext);
-    return useMutation(async (loginData: any) => {
+    return useMutation(async (otpData: any) => {
         try {
-            const res = await axios.post(`${config.baseUrl}/auth/login`, loginData);
-            console.log(res.data);
+            const res = await axios.post(`${config.baseUrl}/auth/login-otp`, otpData);
+            localStorage.setItem("accessToken", res?.data?.data?.accessToken);
+            dispatch({
+                type: "USER_LOGGED_IN",
+                payload: res?.data?.data
+            });
+            return res?.data?.data;
         } catch (error: any) {
             console.log(error);
             return setSnackbarData({
@@ -20,4 +25,4 @@ const useLoginMutation = ({ setSnackbarData }: any) => {
     });
 };
 
-export default useLoginMutation;
+export default useOTPMutation;

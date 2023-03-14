@@ -5,8 +5,8 @@ import Head from "next/head";
 import inventoryAnimation from '../../public/lotties/inventory.json';
 import Lottie from "lottie-react";
 import Snackbar from "@/components/Snackbar";
-import useLoginMutation from "@/queries/loginMutation";
-import useOTPMutation from "@/queries/otpMutation";
+import useLoginMutation from "@/queries/loginQueries/loginMutation";
+import useOTPMutation from "@/queries/loginQueries/otpMutation";
 
 const Login = () => {
     const [phoneNumber, setPhoneNumber] = useState('+91');

@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import Router from 'next/router';
 import withQueryClient from './QueryClient';
-import useVerifyLoginMutation from '@/queries/verifyLoginMutation';
+import useVerifyLoginMutation from '@/queries/loginQueries/verifyLoginMutation';
 import { UserContext } from '@/app-context';
 
 const withPublic = (WrappedComponent: any) => {

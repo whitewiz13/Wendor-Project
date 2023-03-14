@@ -1,6 +1,6 @@
 import { UserContext } from '@/app-context';
 import axios from 'axios';
-import { config } from './config';
+import { config } from '../config';
 import { useContext } from 'react';
 import { useMutation } from 'react-query';
 
