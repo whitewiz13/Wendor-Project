@@ -23,7 +23,7 @@ export class ProductService {
 
     async findAll() {
         try {
-            const productList = await this.productRepo.find();
+            const productList = await this.productRepo.find({ relations: ['user'] });
             return this.serviceMessage.create(productList, "Products fetched successfully");
         } catch (error) {
             console.log(error);
