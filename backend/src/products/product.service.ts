@@ -14,7 +14,11 @@ export class ProductService {
     async create(productData: any) {
         try {
             const newProduct = await this.productRepo.save(productData);
-            return this.serviceMessage.create(newProduct, "Product created successfully");
+            const newFullProduct = await this.productRepo.findOne({
+                where: { id: newProduct.id },
+                relations: ['user']
+            });
+            return this.serviceMessage.create(newFullProduct, "Product created successfully");
         } catch (error) {
             console.log(error);
             return this.serviceMessage.create(null, error?.message);
