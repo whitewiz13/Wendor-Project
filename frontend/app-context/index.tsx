@@ -1,5 +1,7 @@
 import { UserProvider, UserContext } from "./userContext";
+import { ProductProvider, ProductContext, ProductProviderWrapper } from "./productContext";
 
 export {
-    UserProvider, UserContext
+    UserProvider, UserContext,
+    ProductProvider, ProductProviderWrapper, ProductContext,
 }

@@ -1,9 +1,10 @@
 import withQueryClient from "@/utils/QueryClient";
 import withAuth from "@/utils/ProtectedPage";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "@/app-context";
 import ProductCard from "@/components/ProductCard";
 import Head from "next/head";
+import { ProductContext, ProductProviderWrapper } from "@/app-context";
 
 const products = [
     {
@@ -29,6 +30,11 @@ const products = [
 
 const Products = () => {
     const { dispatch }: any = useContext(UserContext);
+    const { state }: any = useContext(ProductContext);
+
+    useEffect(() => {
+        console.log(state);
+    }, []);
 
     const handleSignOut = () => {
         dispatch({
@@ -76,4 +82,4 @@ const Products = () => {
     </>)
 }
 
-export default withQueryClient(withAuth(Products));
+export default withQueryClient(withAuth(ProductProviderWrapper(Products)));

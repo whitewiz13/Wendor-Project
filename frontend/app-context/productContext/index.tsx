@@ -13,4 +13,13 @@ const ProductProvider = ({ children }: any) => {
     return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;
 };
 
-export { ProductContext, ProductProvider };
+const ProductProviderWrapper = (WrappedComponent: any) => {
+    const productProviderWrapper = (props: any) => {
+        return <ProductProvider>
+            <WrappedComponent {...props} />
+        </ProductProvider>
+    }
+    return productProviderWrapper;
+}
+
+export { ProductContext, ProductProvider, ProductProviderWrapper };
