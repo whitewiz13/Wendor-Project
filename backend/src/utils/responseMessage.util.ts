@@ -1,9 +1,9 @@
 class ResponseMessage {
-    create(data: any, message: string, error: string) {
+    create(data: any, message: string, status: string) {
         return ({
             data,
             message,
-            error
+            status
         });
     }
 }

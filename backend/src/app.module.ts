@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { dbConfig } from './config';
+import { ProductModule } from './products/product.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { dbConfig } from './config';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'out'),
     }),
-    AuthModule
+    AuthModule,
+    ProductModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,5 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { Product } from "src/products/product.entity";
 import { User } from "src/user/user.entity";
 
 export const dbConfig: TypeOrmModuleOptions = {
@@ -9,5 +10,5 @@ export const dbConfig: TypeOrmModuleOptions = {
     password: process.env.POSTGRES_PASSWORD,
     database: 'kmekrllz',
     synchronize: true,
-    entities: [User],
+    entities: [User, Product],
 }
