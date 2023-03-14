@@ -11,7 +11,7 @@ const ProductCard = ({ product, setSnackbarData }: any) => {
     return (
         <div className="flex-auto max-w-sm rounded overflow-hidden border shadow-lg border-gray-400 m-5 mt-12 py-4">
             <div className="flex justify-center">
-                <img className="w-half w-20" src={product.image ? product.image : 'https://static.tildacdn.com/tild6563-6565-4335-b936-363465653063/logo.png'} alt={product.name} />
+                <img className="w-half w-20" src={product.imageUrl ? product.imageUrl : 'https://static.tildacdn.com/tild6563-6565-4335-b936-363465653063/logo.png'} alt={product.name} />
             </div>
             <div className="px-6 py-4">
                 <div className="flex justify-between">

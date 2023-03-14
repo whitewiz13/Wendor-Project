@@ -14,7 +14,6 @@ const AddProductModal = ({ setSnackbarData }: any) => {
 
     useEffect(() => {
         if (addProduct.isSuccess || addProduct.isError) {
-            //Add a check
             setFormData({
                 name: "",
                 price: "",
@@ -31,6 +30,9 @@ const AddProductModal = ({ setSnackbarData }: any) => {
         fData.append("name", formData.name);
         fData.append("description", formData.description);
         fData.append("price", formData.price);
+        if (formData.image) {
+            fData.append("image", formData.image);
+        }
         addProduct.mutate(fData);
     };
 
@@ -40,6 +42,24 @@ const AddProductModal = ({ setSnackbarData }: any) => {
             [e.target.name]: e.target.value,
         });
     };
+
+    const handleFileInputChange = (e: any) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setFormData({
+                ...formData,
+                image: e.target.files[0],
+            });
+        }
+    }
+    const handleCancel = () => {
+        setFormData({
+            name: "",
+            price: "",
+            description: "",
+            image: null,
+        });
+        setShowModal(false);
+    }
 
     return (
         <>
@@ -117,6 +137,16 @@ const AddProductModal = ({ setSnackbarData }: any) => {
                                                 onChange={handleInputChange}
                                             ></textarea>
                                         </div>
+                                        <input
+                                            type="file"
+                                            name="image"
+                                            id="image"
+                                            accept="image/*"
+                                            className="block"
+                                            onChange={handleFileInputChange}
+                                        />
+                                        <br></br>
+                                        {formData.image ? <div className="font-bold text-sm text-gray-800">Image Selected</div> : null}
                                     </div>
                                 </div>
                                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
@@ -130,7 +160,7 @@ const AddProductModal = ({ setSnackbarData }: any) => {
                                     <button
                                         type="button"
                                         className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm"
-                                        onClick={() => setShowModal(false)}
+                                        onClick={() => handleCancel()}
                                     >
                                         Cancel
                                     </button>
