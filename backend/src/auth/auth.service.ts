@@ -3,18 +3,23 @@ import { Injectable } from '@nestjs/common';
 import ServiceMessage from '../utils/serviceMessage.util';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
+import * as twilio from 'twilio';
 
 @Injectable()
 export class AuthService {
     serviceMessage = new ServiceMessage();
+    private client: twilio.Twilio;
+
     constructor(private jwtService: JwtService,
-        private userService: UserService) { }
+        private userService: UserService) {
+        this.client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+    }
 
     async handleOTP(phoneNumber: string) {
         try {
             console.log(phoneNumber);
-            //SEND OTP FROM HERE AND SEND YES CONFIRM TO Client
-            return this.serviceMessage.create({ phoneNumber }, "OTP Sent successfully");
+            const res = await this.client.verify.v2.services(process.env.TWILIO_VERIFY_SID).verifications.create({ to: phoneNumber, channel: "sms" });
+            return this.serviceMessage.create({ status: res.status }, "OTP Sent successfully");
         } catch (error) {
             return this.serviceMessage.create(null, error.message);
         }
@@ -22,9 +27,11 @@ export class AuthService {
 
     async verifyOTP(phoneNumber: string, otp: string) {
         try {
-            console.log(phoneNumber);
-            console.log(otp);
-            //VERIFY THE OTP                   
+            const res = await this.client.verify.v2.services(process.env.TWILIO_VERIFY_SID).verificationChecks
+                .create({ to: phoneNumber, code: otp });
+            if (!res.valid) {
+                return this.serviceMessage.create(null, "Invalid OTP");
+            }
             let user = await this.userService.find(phoneNumber);
             if (!user) {
                 user = await this.userService.create({ phoneNumber: phoneNumber });
