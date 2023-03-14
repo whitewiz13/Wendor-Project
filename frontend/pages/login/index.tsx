@@ -41,7 +41,7 @@ const Login = () => {
         <>
             <Head>
                 <title>Inventory - Login</title>
-                <meta name="description" content="Closure AI Login Page" />
+                <meta name="description" content="Inventory Login Page" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
             </Head>
             <div className="min-h-screen flex items-center flex-col xl:flex-row bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
