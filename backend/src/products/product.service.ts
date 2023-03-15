@@ -47,8 +47,12 @@ export class ProductService {
 
     async delete(id: number) {
         try {
-            const deleted = await this.productRepo.delete(id);
-            return this.serviceMessage.create(deleted, "Product deleted successfully");
+            const product = await this.productRepo.findOne({ where: { id: id } });
+            if (!product) {
+                return this.serviceMessage.create(null, "Product not found!");
+            }
+            await this.productRepo.delete(id);
+            return this.serviceMessage.create(product, "Product deleted successfully");
         } catch (error) {
             console.log(error);
             return this.serviceMessage.create(null, error?.message);

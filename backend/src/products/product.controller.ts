@@ -65,6 +65,7 @@ export class ProductController {
             if (!data) {
                 return res.status(500).json(this.responseMessage.create(null, message, "ERROR"));
             }
+            await this.storageService.deleteFile(data?.imageUrl);
             return res.status(200).json(this.responseMessage.create(data, "Product deleted successfully", "SUCCESS"));
         } catch (error) {
             console.log(error);
