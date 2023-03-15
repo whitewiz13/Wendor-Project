@@ -7,6 +7,6 @@ export class AppController {
 
   @Get()
   getHello(@Res() res: any): string {
-    return res.redirect(`http://localhost:4000/login`);
+    return res.redirect(`${process.env.PROD_URL}/login`);
   }
 }
