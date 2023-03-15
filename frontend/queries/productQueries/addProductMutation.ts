@@ -17,6 +17,10 @@ const useAddProductMutation = ({ setSnackbarData }: any) => {
                 type: "ADD_PRODUCT",
                 payload: { newProduct: res?.data?.data }
             });
+            setSnackbarData({
+                message: `Product (${res?.data?.data?.name}) added successfully`,
+                type: "SUCCESS"
+            });
             return res?.data?.data;
         } catch (error: any) {
             console.log(error);

@@ -17,6 +17,10 @@ const useDeleteProductMutation = ({ setSnackbarData }: any) => {
                 type: "REMOVE_PRODUCT",
                 payload: { productId: productId }
             });
+            setSnackbarData({
+                message: `Product (${res?.data?.data?.name}) deleted successfully`,
+                type: "SUCCESS"
+            });
             return res?.data?.data;
         } catch (error: any) {
             console.log(error);
