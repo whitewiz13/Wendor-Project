@@ -45,9 +45,12 @@ export class ProductService {
         }
     }
 
-    async delete(id: number) {
+    async delete(id: number, userId: number) {
         try {
             const product = await this.productRepo.findOne({ where: { id: id } });
+            if (userId !== product.createdBy) {
+                return this.serviceMessage.create(null, "You are not authorized to delete! You can delete your own products.");
+            }
             if (!product) {
                 return this.serviceMessage.create(null, "Product not found!");
             }

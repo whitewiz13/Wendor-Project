@@ -64,7 +64,7 @@ export class ProductController {
     @UseGuards(AuthGuard('jwt'))
     async deleteProduct(@Req() req: any, @Res() res: any) {
         try {
-            const { data, message } = await this.productService.delete(req.query.id);
+            const { data, message } = await this.productService.delete(req.query.id, req.user.data.id);
             if (!data) {
                 return res.status(500).json(this.responseMessage.create(null, message, "ERROR"));
             }
