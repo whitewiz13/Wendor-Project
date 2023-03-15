@@ -3,6 +3,7 @@ import Router from 'next/router';
 import withQueryClient from './QueryClient';
 import useVerifyLoginMutation from '@/queries/loginQueries/verifyLoginMutation';
 import { UserContext } from '@/app-context';
+import LogoLoader from '@/components/LogoLoader';
 
 const withPublic = (WrappedComponent: any) => {
     const WithPublic = (props: any) => {
@@ -15,7 +16,7 @@ const withPublic = (WrappedComponent: any) => {
         }, []);
 
         if (state.isLoggedIn === null) {
-            return null;
+            return <LogoLoader />
         }
         if (state.isLoggedIn === false) {
             return <WrappedComponent {...props} />

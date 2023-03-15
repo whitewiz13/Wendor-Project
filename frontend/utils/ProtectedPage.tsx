@@ -3,6 +3,7 @@ import useVerifyLoginMutation from '@/queries/loginQueries/verifyLoginMutation';
 import withQueryClient from './QueryClient';
 import Router from 'next/router';
 import { UserContext } from '@/app-context';
+import LogoLoader from '@/components/LogoLoader';
 
 const withAuth = (WrappedComponent: any) => {
     const WithAuth = (props: any) => {
@@ -15,7 +16,7 @@ const withAuth = (WrappedComponent: any) => {
         }, []);
 
         if (state.isLoggedIn === null) {
-            return null;
+            return <LogoLoader />
         }
         if (state.isLoggedIn === true) {
             return <WrappedComponent {...props} />
