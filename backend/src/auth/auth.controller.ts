@@ -2,13 +2,16 @@ import { Controller, Res, Post, Body, Get, Req, UseGuards } from '@nestjs/common
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import ResponseMessage from '../utils/responseMessage.util';
+import { ApiResponse, ApiTags } from '@nestjs/swagger/dist';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
     responseMessage = new ResponseMessage();
     constructor(private authService: AuthService) { }
 
     @Get('verify-auth')
+    @ApiResponse({ status: 200, description: 'Verifies user login.' })
     @UseGuards(AuthGuard('jwt'))
     async verifyAuth(@Req() req: any, @Res() res: any) {
         try {
@@ -20,6 +23,7 @@ export class AuthController {
     }
 
     @Post('login')
+    @ApiResponse({ status: 200, description: 'Send otp to the provided number' })
     async userLogin(@Body() body: any, @Res() res: any) {
         try {
             const { phoneNumber } = body;
@@ -35,6 +39,7 @@ export class AuthController {
     }
 
     @Post('login-otp')
+    @ApiResponse({ status: 200, description: 'Logs user in with otp' })
     async userLoginOTP(@Body() body: any, @Res() res: any) {
         try {
             const { phoneNumber, otp } = body;

@@ -4,7 +4,9 @@ import { ProductService } from './product.service';
 import ResponseMessage from 'src/utils/responseMessage.util';
 import { FileInterceptor } from "@nestjs/platform-express";
 import { FirebaseStorageService } from 'src/firebaseStorage/firebaseStorage.service';
+import { ApiResponse, ApiTags } from '@nestjs/swagger/dist/decorators';
 
+@ApiTags('products')
 @Controller('products')
 export class ProductController {
     responseMessage = new ResponseMessage();
@@ -14,6 +16,7 @@ export class ProductController {
     @Post('create')
     @UseGuards(AuthGuard('jwt'))
     @UseInterceptors(FileInterceptor("image"))
+    @ApiResponse({ status: 200, description: 'Returns a created product' })
     async createProduct(@UploadedFile() file: any, @Body() body: any, @Req() req: any, @Res() res: any) {
         try {
             let url: string;
@@ -29,7 +32,7 @@ export class ProductController {
             if (!data) {
                 return res.status(500).json(this.responseMessage.create(null, message, "ERROR"));
             }
-            return res.status(200).json(this.responseMessage.create(data, message, "SUCCESS"));
+            return res.status(201).json(this.responseMessage.create(data, message, "SUCCESS"));
         } catch (error) {
             console.log(error);
             return res.status(500).json(this.responseMessage.create(null, error?.message, "ERROR"));
@@ -65,7 +68,9 @@ export class ProductController {
             if (!data) {
                 return res.status(500).json(this.responseMessage.create(null, message, "ERROR"));
             }
-            await this.storageService.deleteFile(data?.imageUrl);
+            if (data?.imageUrl) {
+                await this.storageService.deleteFile(data?.imageUrl);
+            }
             return res.status(200).json(this.responseMessage.create(data, "Product deleted successfully", "SUCCESS"));
         } catch (error) {
             console.log(error);
